@@ -1,0 +1,44 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: InitConfiguration
+bootstrapTokens:
+- token: "efknfu.nbj20pgscacwnwuw"
+  description: "default kubeadm bootstrap token"
+  ttl: "0"
+localAPIEndpoint:
+  advertiseAddress: 192.168.33.10
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /var/run/crio/crio.sock
+  kubeletExtraArgs:
+    container-runtime: remote
+    container-runtime-endpoint: /var/run/crio/crio.sock
+    cgroup-driver: systemd
+    cni-bin-dir: /opt/cni/bin
+---
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: ClusterConfiguration
+kubernetesVersion: v1.13.2
+clusterName: crio-1
+controlPlaneEndpoint: 192.168.33.10:6443
+networking:
+  podSubnet: 10.244.0.0/16
+apiServer:
+  certSANs:
+  - master-cri-1.vagrant.local
+
+
+#   # https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/
+#   extraArgs:
+#     max-requests-inflight: "1000"
+#     max-mutating-requests-inflight: "500"        
+#     default-watch-cache-size: "500"
+#     watch-cache-sizes: "persistentvolumeclaims#1000,persistentvolumes#1000"
+
+# controllerManager:
+#   # https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/
+#   extraArgs:
+#     deployment-controller-sync-period: "50s"
+# scheduler:
+#   # https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/
+#   extraArgs:
+#     address: 0.0.0.0

@@ -1,0 +1,15 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: JoinConfiguration
+nodeRegistration:
+  criSocket: /var/run/crio/crio.sock
+  kubeletExtraArgs:
+    container-runtime: remote
+    container-runtime-endpoint: /var/run/crio/crio.sock
+    runtime-request-timeout: 15m
+    cgroup-driver: systemd
+    cni-bin-dir: /opt/cni/bin
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: 192.168.33.10:6443
+    token: efknfu.nbj20pgscacwnwuw
+    unsafeSkipCAVerification: true
